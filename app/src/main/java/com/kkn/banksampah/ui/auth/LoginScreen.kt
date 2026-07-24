@@ -27,7 +27,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = viewModel()
 ) {
     val uiState by viewModel.loginState.collectAsStateWithLifecycle()
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -100,9 +100,9 @@ fun LoginScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         OutlinedTextField(
-                            value = email,
-                            onValueChange = { email = it },
-                            label = { Text("Email") },
+                            value = username,
+                            onValueChange = { username = it },
+                            label = { Text("Username") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
@@ -117,7 +117,7 @@ fun LoginScreen(
                         )
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(
-                            onClick = { viewModel.login(email, password) },
+                            onClick = { viewModel.login(username, password) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),

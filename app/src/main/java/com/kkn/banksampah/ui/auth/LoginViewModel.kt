@@ -15,14 +15,14 @@ class LoginViewModel : ViewModel() {
     private val _loginState = MutableStateFlow<UiState<User>>(UiState.Idle)
     val loginState: StateFlow<UiState<User>> = _loginState
 
-    fun login(email: String, password: String) {
+    fun login(username: String, password: String) {
         viewModelScope.launch {
-            if (email.isBlank() || password.isBlank()) {
-                _loginState.value = UiState.Error("Email dan password tidak boleh kosong")
+            if (username.isBlank() || password.isBlank()) {
+                _loginState.value = UiState.Error("Username dan password tidak boleh kosong")
                 return@launch
             }
             _loginState.value = UiState.Loading
-            val result = authRepository.login(email, password)
+            val result = authRepository.login(username, password)
             if (result.isSuccess) {
                 _loginState.value = UiState.Success(result.getOrNull()!!)
             } else {
