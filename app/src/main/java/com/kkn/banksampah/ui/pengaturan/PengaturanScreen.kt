@@ -3,6 +3,7 @@ package com.kkn.banksampah.ui.pengaturan
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Assessment
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
@@ -15,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kkn.banksampah.navigation.Screen
+import com.kkn.banksampah.ui.components.AppTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,12 +30,8 @@ fun PengaturanScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Pengaturan") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+            AppTopBar(
+                title = "Pengaturan"
             )
         }
     ) { padding ->
@@ -45,13 +43,13 @@ fun PengaturanScreen(
         ) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Person, contentDescription = "Profile", modifier = Modifier.size(48.dp))
+                    Icon(Icons.Default.Person, contentDescription = "Profile", modifier = Modifier.size(48.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
-                        Text(user?.nama ?: "Loading...", style = MaterialTheme.typography.titleLarge)
-                        Text(user?.email ?: "", style = MaterialTheme.typography.bodyMedium)
+                        Text(user?.nama ?: "Petugas", style = MaterialTheme.typography.titleLarge)
+                        Text(user?.email ?: "", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Badge(containerColor = MaterialTheme.colorScheme.secondary) {
+                        Badge(containerColor = MaterialTheme.colorScheme.primaryContainer, contentColor = MaterialTheme.colorScheme.onPrimaryContainer) {
                             Text(user?.role ?: "Petugas", modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp))
                         }
                     }
@@ -64,6 +62,11 @@ fun PengaturanScreen(
                 icon = Icons.Default.List,
                 title = "Kelola Jenis Sampah",
                 onClick = { navController.navigate(Screen.JenisSampah.route) }
+            )
+            SettingsMenuItem(
+                icon = Icons.Default.Assessment,
+                title = "Laporan Bulanan",
+                onClick = { navController.navigate(Screen.Laporan.route) }
             )
             SettingsMenuItem(
                 icon = Icons.Default.Info,

@@ -48,7 +48,12 @@ fun NasabahScreen(
     }
 
     Scaffold(
-        topBar = { AppTopBar(title = "Data Nasabah", onBackClick = { navController.popBackStack() }) },
+        topBar = {
+            AppTopBar(
+                title = "Data Nasabah",
+                onBackClick = if (navController.previousBackStackEntry != null) { { navController.popBackStack() } } else null
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
                 Icon(Icons.Default.Add, contentDescription = "Tambah Nasabah")
@@ -83,7 +88,7 @@ fun NasabahScreen(
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            items(nasabahList) { nasabah ->
+                            items(nasabahList, key = { it.id }) { nasabah ->
                                 NasabahCard(
                                     nasabah = nasabah,
                                     onEdit = { nasabahToEdit = nasabah },
@@ -105,10 +110,13 @@ fun NasabahScreen(
                 nasabahToEdit = null
             },
             onSave = { nama, alamat, hp ->
+                val cleanNama = nama.trim()
+                val cleanAlamat = alamat.trim()
+                val cleanHp = hp.trim()
                 if (nasabahToEdit != null) {
-                    viewModel.updateNasabah(nasabahToEdit!!.copy(nama = nama, alamat = alamat, noHp = hp))
+                    viewModel.updateNasabah(nasabahToEdit!!.copy(nama = cleanNama, alamat = cleanAlamat, noHp = cleanHp))
                 } else {
-                    viewModel.addNasabah(nama, alamat, hp)
+                    viewModel.addNasabah(cleanNama, cleanAlamat, cleanHp)
                 }
                 showAddDialog = false
                 nasabahToEdit = null

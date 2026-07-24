@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.kkn.banksampah.ui.components.*
@@ -23,8 +24,8 @@ fun JenisSampahScreen(
     navController: NavController,
     viewModel: SampahViewModel = viewModel()
 ) {
-    val jenisSampahList by viewModel.jenisSampahList.collectAsState()
-    val operationState by viewModel.operationState.collectAsState()
+    val jenisSampahList by viewModel.jenisSampahList.collectAsStateWithLifecycle()
+    val operationState by viewModel.operationState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     
     var showAddDialog by remember { mutableStateOf(false) }
@@ -62,7 +63,7 @@ fun JenisSampahScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(jenisSampahList) { sampah ->
+                items(jenisSampahList, key = { it.id }) { sampah ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)

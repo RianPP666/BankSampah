@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.kkn.banksampah.data.model.Nasabah
+import com.kkn.banksampah.ui.components.AppTopBar
 import com.kkn.banksampah.util.CurrencyHelper
 import com.kkn.banksampah.util.UiState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -51,17 +52,9 @@ fun TarikScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Tarik Saldo") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Kembali")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+            AppTopBar(
+                title = "Tarik Saldo",
+                onBackClick = { navController.popBackStack() }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
