@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_dashboard">
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.kkn.banksampah.ui.DashboardFragment"
+        android:label="Beranda" />
+    <fragment
+        android:id="@+id/nav_transaksi"
+        android:name="com.kkn.banksampah.ui.TransaksiFragment"
+        android:label="Transaksi" />
+    <fragment
+        android:id="@+id/nav_nasabah"
+        android:name="com.kkn.banksampah.ui.NasabahFragment"
+        android:label="Nasabah" />
+    <fragment
+        android:id="@+id/nav_riwayat"
+        android:name="com.kkn.banksampah.ui.RiwayatFragment"
+        android:label="Riwayat" />
+</navigation>

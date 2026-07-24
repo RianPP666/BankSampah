@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Bank Sampah</string>
+
+    <!-- Menu Navigasi -->
+    <string name="menu_beranda">Beranda</string>
+    <string name="menu_transaksi">Transaksi</string>
+    <string name="menu_nasabah">Nasabah</string>
+    <string name="menu_riwayat">Riwayat</string>
+
+    <!-- Dashboard -->
+    <string name="total_saldo">Total Saldo</string>
+    <string name="total_sampah">Total Sampah</string>
+    <string name="total_nasabah">Total Nasabah</string>
+    <string name="selamat_datang">Selamat Datang</string>
+    <string name="ringkasan_hari_ini">Ringkasan Hari Ini</string>
+
+    <!-- Nasabah -->
+    <string name="tambah_nasabah">+ Tambah Nasabah Baru</string>
+    <string name="nama_nasabah">Nama Nasabah</string>
+    <string name="alamat_nasabah">Alamat</string>
+    <string name="no_hp">No. HP</string>
+    <string name="saldo">Saldo</string>
+    <string name="simpan">SIMPAN</string>
+    <string name="batal">BATAL</string>
+    <string name="daftar_nasabah">Daftar Nasabah</string>
+    <string name="cari_nasabah">Cari nama nasabah...</string>
+
+    <!-- Transaksi -->
+    <string name="transaksi_baru">Transaksi Baru</string>
+    <string name="pilih_nasabah">Pilih Nasabah</string>
+    <string name="pilih_jenis_sampah">Pilih Jenis Sampah</string>
+    <string name="berat_kg">Berat (Kg)</string>
+    <string name="masukkan_berat">Masukkan berat</string>
+    <string name="harga_per_kg">Harga per Kg</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="total">TOTAL</string>
+    <string name="simpan_transaksi">💾  SIMPAN TRANSAKSI</string>
+    <string name="tambah_item">+ Tambah Jenis Sampah Lain</string>
+    <string name="jenis_transaksi">Jenis Transaksi</string>
+    <string name="setor_sampah">Setor Sampah</string>
+    <string name="tarik_saldo">Tarik Saldo</string>
+    <string name="jumlah_tarik">Jumlah Penarikan (Rp)</string>
+    <string name="masukkan_jumlah">Masukkan jumlah</string>
+
+    <!-- Riwayat -->
+    <string name="riwayat_transaksi">Riwayat Transaksi</string>
+    <string name="tidak_ada_data">Belum ada data</string>
+
+    <!-- Jenis Sampah -->
+    <string name="kelola_jenis_sampah">Kelola Jenis Sampah</string>
+    <string name="nama_sampah">Nama Jenis Sampah</string>
+    <string name="harga_sampah">Harga per Kg (Rp)</string>
+
+    <!-- Dialog -->
+    <string name="konfirmasi">Konfirmasi</string>
+    <string name="yakin_simpan">Apakah Anda yakin ingin menyimpan data ini?</string>
+    <string name="ya">Ya</string>
+    <string name="tidak">Tidak</string>
+    <string name="berhasil">Berhasil!</string>
+    <string name="gagal">Gagal!</string>
+    <string name="data_tersimpan">Data berhasil disimpan</string>
+    <string name="hapus">Hapus</string>
+    <string name="edit">Edit</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Modern Emerald & Slate Palette -->
+    <color name="primary">#059669</color>
+    <color name="primary_dark">#047857</color>
+    <color name="primary_light">#10B981</color>
+    <color name="primary_surface">#ECFDF5</color>
+    <color name="primary_surface_border">#A7F3D0</color>
+
+    <!-- Accent & Orange (Tarik Saldo) -->
+    <color name="accent">#F59E0B</color>
+    <color name="accent_surface">#FEF3C7</color>
+    <color name="accent_dark">#D97706</color>
+
+    <!-- Text Colors (Slate) -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_tertiary">#94A3B8</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
+    <!-- Backgrounds & Borders -->
+    <color name="background">#F8FAFC</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="border_color">#E2E8F0</color>
+    <color name="border_subtle">#F1F5F9</color>
+
+    <!-- Status & Badges -->
+    <color name="badge_setor_bg">#DCFCE7</color>
+    <color name="badge_setor_text">#15803D</color>
+    <color name="badge_tarik_bg">#FEF3C7</color>
+    <color name="badge_tarik_text">#B45309</color>
+
+    <color name="danger">#EF4444</color>
+    <color name="danger_surface">#FEE2E2</color>
+
+    <!-- Compatibility Colors -->
+    <color name="card_setor">#DCFCE7</color>
+    <color name="card_tarik">#FEF3C7</color>
+    <color name="success">#059669</color>
+    <color name="warning">#D97706</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
