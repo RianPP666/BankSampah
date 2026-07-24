@@ -1,13 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.BankSampah" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
-        <item name="android:colorBackground">@color/background</item>
-        <item name="colorSurface">@color/surface</item>
-        <item name="android:textColorPrimary">@color/text_primary</item>
-        <item name="android:textColorSecondary">@color/text_secondary</item>
+    <style name="Theme.BankSampah" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
-
-    <style name="Theme.BankSampah" parent="Base.Theme.BankSampah" />
 </resources>
