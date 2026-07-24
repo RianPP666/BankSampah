@@ -23,13 +23,16 @@ data class LaporanBulanan(
     val totalTarik: Double = 0.0,
     val totalKg: Double = 0.0,
     val jumlahTransaksi: Int = 0,
-    val topNasabah: List<NasabahStat> = emptyList()
+    val topNasabah: List<NasabahStat> = emptyList(),
+    val daftarPenyetor: List<NasabahStat> = emptyList()
 )
 
 data class NasabahStat(
-    val idNasabah: String,
-    val nama: String,
-    val totalSetor: Double
+    val idNasabah: String = "",
+    val nama: String = "",
+    val totalSetor: Double = 0.0,
+    val totalKg: Double = 0.0,
+    val jumlahTransaksi: Int = 0
 )
 
 class LaporanRepository {
@@ -110,18 +113,29 @@ class LaporanRepository {
         val topNasabahMap = mutableMapOf<String, NasabahStat>()
         
         transList.filter { it.jenisTransaksi == "SETOR" }.forEach { trans ->
+            val kgTrans = trans.detailSampah.sumOf { it.beratKg }
             val current = topNasabahMap[trans.idNasabah]
             if (current == null) {
-                topNasabahMap[trans.idNasabah] = NasabahStat(trans.idNasabah, trans.namaNasabah, trans.totalRupiah)
+                topNasabahMap[trans.idNasabah] = NasabahStat(
+                    idNasabah = trans.idNasabah,
+                    nama = trans.namaNasabah,
+                    totalSetor = trans.totalRupiah,
+                    totalKg = kgTrans,
+                    jumlahTransaksi = 1
+                )
             } else {
-                topNasabahMap[trans.idNasabah] = current.copy(totalSetor = current.totalSetor + trans.totalRupiah)
+                topNasabahMap[trans.idNasabah] = current.copy(
+                    totalSetor = current.totalSetor + trans.totalRupiah,
+                    totalKg = current.totalKg + kgTrans,
+                    jumlahTransaksi = current.jumlahTransaksi + 1
+                )
             }
         }
         
-        val topNasabah = topNasabahMap.values.sortedByDescending { it.totalSetor }.take(5)
-        
+        val sortedPenyetor = topNasabahMap.values.sortedByDescending { it.totalSetor }
+        val topNasabah = sortedPenyetor.take(5)
         val transCount = transList.size
         
-        return LaporanBulanan(bulan, tahun, totalSetor, totalTarik, totalKg, transCount, topNasabah)
+        return LaporanBulanan(bulan, tahun, totalSetor, totalTarik, totalKg, transCount, topNasabah, sortedPenyetor)
     }
 }
