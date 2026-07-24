@@ -14,7 +14,7 @@ class SampahViewModel : ViewModel() {
     private val _jenisSampahList = MutableStateFlow<List<JenisSampah>>(emptyList())
     val jenisSampahList: StateFlow<List<JenisSampah>> = _jenisSampahList.asStateFlow()
 
-    private val _operationState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    private val _operationState = MutableStateFlow<UiState<Unit>>(UiState.Success(Unit))
     val operationState: StateFlow<UiState<Unit>> = _operationState.asStateFlow()
 
     init {
@@ -25,7 +25,7 @@ class SampahViewModel : ViewModel() {
         viewModelScope.launch {
             _operationState.value = UiState.Loading
             repository.getAll().catch { e ->
-                _operationState.value = UiState.Error(e.message ?: "Unknown Error")
+                _operationState.value = UiState.Error(e.message ?: "Gagal memuat data jenis sampah")
             }.collect { list ->
                 _jenisSampahList.value = list
                 _operationState.value = UiState.Success(Unit)
@@ -69,5 +69,9 @@ class SampahViewModel : ViewModel() {
                 _operationState.value = UiState.Error(e.message ?: "Gagal menghapus jenis sampah")
             }
         }
+    }
+
+    fun resetState() {
+        _operationState.value = UiState.Success(Unit)
     }
 }
