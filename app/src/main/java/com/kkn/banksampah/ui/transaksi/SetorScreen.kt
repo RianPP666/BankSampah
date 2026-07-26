@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -78,7 +79,12 @@ fun SetorScreen(
         topBar = {
             AppTopBar(
                 title = "Setor Sampah",
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                actions = {
+                    IconButton(onClick = { navController.navigate(com.kkn.banksampah.navigation.Screen.JenisSampah.route) }) {
+                        Icon(imageVector = Icons.Default.Settings, contentDescription = "Kelola Jenis Sampah")
+                    }
+                }
             )
         }
     ) { padding ->

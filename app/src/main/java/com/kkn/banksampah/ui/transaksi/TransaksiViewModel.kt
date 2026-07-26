@@ -1,5 +1,6 @@
 package com.kkn.banksampah.ui.transaksi
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkn.banksampah.data.model.DetailSampah
@@ -36,15 +37,16 @@ class TransaksiViewModel : ViewModel() {
     val tarikState: StateFlow<UiState<Unit>> = _tarikState
 
     init {
-        loadData()
-    }
-
-    fun loadData() {
+        // Collect only once in init to prevent duplicate collectors
         viewModelScope.launch {
-            nasabahRepository.getAll().catch { }.collect { _nasabahList.value = it }
+            nasabahRepository.getAll()
+                .catch { e -> Log.e("TransaksiVM", "Error loading nasabah: ${e.message}") }
+                .collect { _nasabahList.value = it }
         }
         viewModelScope.launch {
-            sampahRepository.getAll().catch { }.collect { _jenisSampahList.value = it }
+            sampahRepository.getAll()
+                .catch { e -> Log.e("TransaksiVM", "Error loading jenis sampah: ${e.message}") }
+                .collect { _jenisSampahList.value = it }
         }
     }
 

@@ -1,12 +1,14 @@
 package com.kkn.banksampah.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -16,9 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavController
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,6 +31,7 @@ import com.kkn.banksampah.ui.pengaturan.PengaturanScreen
 import com.kkn.banksampah.ui.riwayat.RiwayatScreen
 import com.kkn.banksampah.ui.transaksi.SetorScreen
 import com.kkn.banksampah.ui.transaksi.TarikScreen
+import com.kkn.banksampah.ui.transaksi.TransaksiMenuScreen
 
 data class BottomNavItem(
     val route: String,
@@ -45,17 +45,29 @@ fun AppNavigation(startDestination: String) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    // Bottom nav routes — these are the root-level tabs
+    val bottomNavRoutes = listOf(
+        Screen.Dashboard.route,
+        Screen.TransaksiMenu.route,
+        Screen.Nasabah.route,
+        Screen.Riwayat.route,
+        Screen.Pengaturan.route
+    )
+
     val bottomNavItems = listOf(
         BottomNavItem(Screen.Dashboard.route, Icons.Filled.Dashboard, "Beranda"),
-        BottomNavItem(Screen.Setor.route, Icons.Filled.Add, "Transaksi"),
+        BottomNavItem(Screen.TransaksiMenu.route, Icons.Filled.SwapHoriz, "Transaksi"),
         BottomNavItem(Screen.Nasabah.route, Icons.Filled.People, "Nasabah"),
         BottomNavItem(Screen.Riwayat.route, Icons.Filled.History, "Riwayat"),
         BottomNavItem(Screen.Pengaturan.route, Icons.Filled.Settings, "Pengaturan")
     )
 
+    // Only show bottom bar on root tab routes (hide on Login, Setor, Tarik, Laporan, JenisSampah)
+    val showBottomBar = currentRoute in bottomNavRoutes
+
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.Login.route) {
+            if (showBottomBar) {
                 NavigationBar {
                     bottomNavItems.forEach { item ->
                         NavigationBarItem(
@@ -91,6 +103,9 @@ fun AppNavigation(startDestination: String) {
             }
             composable(Screen.Dashboard.route) {
                 DashboardScreen(navController = navController)
+            }
+            composable(Screen.TransaksiMenu.route) {
+                TransaksiMenuScreen(navController = navController)
             }
             composable(Screen.Nasabah.route) {
                 NasabahScreen(navController = navController)

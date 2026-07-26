@@ -1,19 +1,18 @@
 package com.kkn.banksampah.ui.dashboard
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkn.banksampah.data.model.Transaksi
 import com.kkn.banksampah.data.repository.LaporanRepository
-import com.kkn.banksampah.data.repository.NasabahRepository
 import com.kkn.banksampah.data.repository.TransaksiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 
 class DashboardViewModel : ViewModel() {
-    private val nasabahRepository = NasabahRepository()
     private val transaksiRepository = TransaksiRepository()
     private val laporanRepository = LaporanRepository()
 
@@ -29,37 +28,42 @@ class DashboardViewModel : ViewModel() {
     private val _recentTransactions = MutableStateFlow<List<Transaksi>>(emptyList())
     val recentTransactions: StateFlow<List<Transaksi>> = _recentTransactions.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     init {
-        loadDashboardData()
+        // Only collect once in init to prevent duplicate collectors
+        loadDashboardStats()
+        loadRecentTransactions()
     }
 
-    fun loadDashboardData() {
-        _isLoading.value = true
-        
+    private fun loadDashboardStats() {
         viewModelScope.launch {
-            try {
-                laporanRepository.getDashboardStats().collect { stats ->
+            laporanRepository.getDashboardStats()
+                .catch { e ->
+                    Log.e("DashboardVM", "Error loading stats: ${e.message}")
+                    _isLoading.value = false
+                }
+                .collect { stats ->
                     _totalNasabah.value = stats.totalNasabah
                     _totalSampahKg.value = stats.totalSampahKg
                     _totalSaldo.value = stats.totalSaldo
+                    _isLoading.value = false
                 }
-            } catch (e: Exception) {
-                // Handle error
-            }
         }
-        
+    }
+
+    private fun loadRecentTransactions() {
         viewModelScope.launch {
-            try {
-                transaksiRepository.getRecentTransactions(5).collect { transactions ->
+            transaksiRepository.getRecentTransactions(5)
+                .catch { e ->
+                    Log.e("DashboardVM", "Error loading transactions: ${e.message}")
+                    _isLoading.value = false
+                }
+                .collect { transactions ->
                     _recentTransactions.value = transactions
                     _isLoading.value = false
                 }
-            } catch (e: Exception) {
-                _isLoading.value = false
-            }
         }
     }
 }
