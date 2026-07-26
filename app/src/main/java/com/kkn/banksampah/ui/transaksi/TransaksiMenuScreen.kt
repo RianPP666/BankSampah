@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.MoneyOff
+import androidx.compose.material.icons.filled.Store
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -64,6 +65,17 @@ fun TransaksiMenuScreen(navController: NavController) {
                 contentColor = Color(0xFFDC2626),
                 onClick = { navController.navigate(Screen.Tarik.route) }
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TransaksiMenuCard(
+                title = "Jual ke Pengepul",
+                description = "Catat penjualan sampah terkumpul ke pengepul / pembeli",
+                icon = Icons.Default.Store,
+                containerColor = Color(0xFFFEF3C7),
+                contentColor = Color(0xFFD97706),
+                onClick = { navController.navigate(Screen.Penjualan.route) }
+            )
         }
     }
 }
@@ -84,27 +96,27 @@ fun TransaksiMenuCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier.padding(24.dp),
+            modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
                 tint = contentColor,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = contentColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = contentColor.copy(alpha = 0.7f)
+                    style = MaterialTheme.typography.bodySmall,
+                    color = contentColor.copy(alpha = 0.8f)
                 )
             }
         }

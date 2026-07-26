@@ -43,14 +43,14 @@ fun PengaturanScreen(
         ) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Person, contentDescription = "Profile", modifier = Modifier.size(48.dp), tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.Default.Person, contentDescription = "Profile", modifier = Modifier.size(40.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
-                        Text(user?.nama ?: "Petugas", style = MaterialTheme.typography.titleLarge)
-                        Text(user?.email ?: "", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(user?.nama ?: "Petugas", style = MaterialTheme.typography.titleMedium.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold))
+                        Text(user?.email ?: "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(modifier = Modifier.height(4.dp))
                         Badge(containerColor = MaterialTheme.colorScheme.primaryContainer, contentColor = MaterialTheme.colorScheme.onPrimaryContainer) {
-                            Text(user?.role ?: "Petugas", modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp))
+                            Text(user?.role ?: "Petugas", modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelSmall)
                         }
                     }
                 }
@@ -76,6 +76,20 @@ fun PengaturanScreen(
             
             Spacer(modifier = Modifier.weight(1f))
             
+            // Add Reset Database Button
+            var showResetDialog by remember { mutableStateOf(false) }
+            var isResetting by remember { mutableStateOf(false) }
+            var resetMessage by remember { mutableStateOf<String?>(null) }
+            
+            Button(
+                onClick = { showResetDialog = true },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer)
+            ) {
+                Text("Reset / Kosongkan Database", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = { showLogoutDialog = true },
                 modifier = Modifier.fillMaxWidth(),
@@ -90,6 +104,54 @@ fun PengaturanScreen(
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+
+            // Reset Dialog
+            if (showResetDialog) {
+                AlertDialog(
+                    onDismissRequest = { if (!isResetting) showResetDialog = false },
+                    title = { Text("⚠️ PERINGATAN KERAS") },
+                    text = { Text("Tindakan ini akan MENGHAPUS PERMANEN seluruh data Nasabah, Transaksi, Penjualan, dan Jenis Sampah. \n\nApakah Anda benar-benar yakin ingin memulai dari nol?") },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                isResetting = true
+                                viewModel.resetDatabase { success, message ->
+                                    isResetting = false
+                                    showResetDialog = false
+                                    resetMessage = message
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                            enabled = !isResetting
+                        ) {
+                            if (isResetting) {
+                                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onError)
+                            } else {
+                                Text("Ya, HAPUS SEMUA")
+                            }
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showResetDialog = false }, enabled = !isResetting) {
+                            Text("Batal")
+                        }
+                    }
+                )
+            }
+
+            // Reset Result Message
+            if (resetMessage != null) {
+                AlertDialog(
+                    onDismissRequest = { resetMessage = null },
+                    title = { Text("Informasi") },
+                    text = { Text(resetMessage!!) },
+                    confirmButton = {
+                        TextButton(onClick = { resetMessage = null }) {
+                            Text("OK")
+                        }
+                    }
+                )
+            }
         }
     }
 
@@ -138,9 +200,9 @@ fun SettingsMenuItem(icon: androidx.compose.ui.graphics.vector.ImageVector, titl
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, contentDescription = title, tint = MaterialTheme.colorScheme.primary)
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(title, style = MaterialTheme.typography.titleMedium)
+            Icon(icon, contentDescription = title, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(title, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold))
         }
     }
 }

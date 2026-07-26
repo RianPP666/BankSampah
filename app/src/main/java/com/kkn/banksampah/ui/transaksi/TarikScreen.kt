@@ -169,8 +169,9 @@ fun TarikScreen(
             OutlinedTextField(
                 value = jumlahTarikText,
                 onValueChange = { jumlahTarikText = it.filter { c -> c.isDigit() }; validationError = null },
-                label = { Text("Jumlah Penarikan (Rp)") },
+                label = { Text("Jumlah Penarikan") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                visualTransformation = com.kkn.banksampah.util.CurrencyVisualTransformation(),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 isError = validationError != null,

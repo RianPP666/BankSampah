@@ -36,6 +36,9 @@ class TransaksiViewModel : ViewModel() {
     private val _tarikState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
     val tarikState: StateFlow<UiState<Unit>> = _tarikState
 
+    private val laporanRepository = com.kkn.banksampah.data.repository.LaporanRepository()
+    private var currentKasBank = 0.0
+
     init {
         // Collect only once in init to prevent duplicate collectors
         viewModelScope.launch {
@@ -47,6 +50,11 @@ class TransaksiViewModel : ViewModel() {
             sampahRepository.getAll()
                 .catch { e -> Log.e("TransaksiVM", "Error loading jenis sampah: ${e.message}") }
                 .collect { _jenisSampahList.value = it }
+        }
+        viewModelScope.launch {
+            laporanRepository.getDashboardStats().collect { stats ->
+                currentKasBank = stats.totalKas
+            }
         }
     }
 
@@ -75,6 +83,12 @@ class TransaksiViewModel : ViewModel() {
     }
 
     fun tarik(idNasabah: String, namaNasabah: String, jumlah: Double) {
+        if (jumlah > currentKasBank) {
+            val kasFormatted = com.kkn.banksampah.util.CurrencyHelper.formatRupiah(currentKasBank)
+            _tarikState.value = UiState.Error("Gagal: Uang Kas Bank tidak mencukupi (Tersedia: $kasFormatted). Silakan jual stok gudang terlebih dahulu.")
+            return
+        }
+
         viewModelScope.launch {
             _tarikState.value = UiState.Loading
             try {

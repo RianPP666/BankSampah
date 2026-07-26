@@ -3,6 +3,7 @@ package com.kkn.banksampah.data.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.kkn.banksampah.data.model.Nasabah
+import com.kkn.banksampah.data.model.Penjualan
 import com.kkn.banksampah.data.model.Transaksi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,8 @@ data class DashboardStats(
     val totalNasabah: Int = 0,
     val totalSampahKg: Double = 0.0,
     val totalSaldo: Double = 0.0,
+    val stokGudangKg: Double = 0.0,
+    val totalKas: Double = 0.0,
     val transaksiHariIni: Int = 0
 )
 
@@ -45,6 +48,7 @@ class LaporanRepository {
         // Use separate tracked variables instead of nested listeners
         var latestNasabahList: List<Nasabah> = emptyList()
         var latestTransList: List<Transaksi> = emptyList()
+        var latestPenjualanList: List<Penjualan> = emptyList()
 
         fun computeAndSend() {
             val totalNasabah = latestNasabahList.size
@@ -54,6 +58,13 @@ class LaporanRepository {
                 .flatMap { it.detailSampah }
                 .sumOf { it.beratKg }
                 
+            val totalSampahTerjual = latestPenjualanList.sumOf { it.totalBeratKg }
+            val stokGudangKg = totalSampahKg - totalSampahTerjual
+            
+            val totalPendapatan = latestPenjualanList.sumOf { it.totalHargaJual }
+            val totalPengeluaranTarik = latestTransList.filter { it.jenisTransaksi == "TARIK" }.sumOf { it.totalRupiah }
+            val totalKas = totalPendapatan - totalPengeluaranTarik
+                
             val today = Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
@@ -61,12 +72,13 @@ class LaporanRepository {
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
             
-            val transHariIni = latestTransList.count { it.tanggal >= today }
+            val transHariIni = latestTransList.count { it.tanggal >= today } +
+                               latestPenjualanList.count { it.tanggal >= today }
             
-            trySend(DashboardStats(totalNasabah, totalSampahKg, totalSaldo, transHariIni))
+            trySend(DashboardStats(totalNasabah, totalSampahKg, totalSaldo, stokGudangKg, totalKas, transHariIni))
         }
 
-        // Two independent listeners — no nesting, no leak
+        // Three independent listeners — no nesting, no leak
         val nasabahListener: ListenerRegistration = nasabahCollection.addSnapshotListener { snapshot, error ->
             if (error != null || snapshot == null) return@addSnapshotListener
             latestNasabahList = snapshot.documents.mapNotNull { it.toObject(Nasabah::class.java) }
@@ -79,9 +91,16 @@ class LaporanRepository {
             computeAndSend()
         }
         
+        val penjualanListener: ListenerRegistration = firestore.collection("penjualan").addSnapshotListener { snapshot, error ->
+            if (error != null || snapshot == null) return@addSnapshotListener
+            latestPenjualanList = snapshot.documents.mapNotNull { it.toObject(Penjualan::class.java) }
+            computeAndSend()
+        }
+        
         awaitClose { 
             nasabahListener.remove()
             transaksiListener.remove()
+            penjualanListener.remove()
         }
     }
 

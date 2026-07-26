@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
+import androidx.compose.ui.text.style.TextOverflow
+
 @Composable
 fun StatCard(
     title: String,
@@ -61,13 +63,13 @@ fun StatCard(
         ) {
             Row(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(horizontal = 12.dp, vertical = 14.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(36.dp)
                         .background(color = iconColor.copy(alpha = 0.1f), shape = CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
@@ -75,22 +77,26 @@ fun StatCard(
                         imageVector = icon,
                         contentDescription = title,
                         tint = iconColor,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(10.dp))
                 Column(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = value,
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }

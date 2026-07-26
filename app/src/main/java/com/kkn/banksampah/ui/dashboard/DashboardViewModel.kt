@@ -25,6 +25,12 @@ class DashboardViewModel : ViewModel() {
     private val _totalSaldo = MutableStateFlow(0.0)
     val totalSaldo: StateFlow<Double> = _totalSaldo.asStateFlow()
 
+    private val _stokGudangKg = MutableStateFlow(0.0)
+    val stokGudangKg: StateFlow<Double> = _stokGudangKg.asStateFlow()
+
+    private val _totalKas = MutableStateFlow(0.0)
+    val totalKas: StateFlow<Double> = _totalKas.asStateFlow()
+
     private val _recentTransactions = MutableStateFlow<List<Transaksi>>(emptyList())
     val recentTransactions: StateFlow<List<Transaksi>> = _recentTransactions.asStateFlow()
 
@@ -48,6 +54,8 @@ class DashboardViewModel : ViewModel() {
                     _totalNasabah.value = stats.totalNasabah
                     _totalSampahKg.value = stats.totalSampahKg
                     _totalSaldo.value = stats.totalSaldo
+                    _stokGudangKg.value = stats.stokGudangKg
+                    _totalKas.value = stats.totalKas
                     _isLoading.value = false
                 }
         }

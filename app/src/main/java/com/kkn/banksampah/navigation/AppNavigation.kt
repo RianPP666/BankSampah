@@ -27,6 +27,7 @@ import com.kkn.banksampah.ui.dashboard.DashboardScreen
 import com.kkn.banksampah.ui.sampah.JenisSampahScreen
 import com.kkn.banksampah.ui.laporan.LaporanScreen
 import com.kkn.banksampah.ui.nasabah.NasabahScreen
+import com.kkn.banksampah.ui.penjualan.PenjualanScreen
 import com.kkn.banksampah.ui.pengaturan.PengaturanScreen
 import com.kkn.banksampah.ui.riwayat.RiwayatScreen
 import com.kkn.banksampah.ui.transaksi.SetorScreen
@@ -127,6 +128,9 @@ fun AppNavigation(startDestination: String) {
             }
             composable(Screen.Pengaturan.route) {
                 PengaturanScreen(navController = navController)
+            }
+            composable(Screen.Penjualan.route) {
+                PenjualanScreen(navController = navController)
             }
         }
     }

@@ -43,6 +43,8 @@ fun DashboardScreen(
 ) {
     val totalNasabah by viewModel.totalNasabah.collectAsStateWithLifecycle()
     val totalSampahKg by viewModel.totalSampahKg.collectAsStateWithLifecycle()
+    val stokGudangKg by viewModel.stokGudangKg.collectAsStateWithLifecycle()
+    val totalKas by viewModel.totalKas.collectAsStateWithLifecycle()
     val totalSaldo by viewModel.totalSaldo.collectAsStateWithLifecycle()
     val recentTransactions by viewModel.recentTransactions.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
@@ -150,28 +152,40 @@ fun DashboardScreen(
                         StatCard(
                             modifier = Modifier.weight(1f),
                             title = "Total Nasabah",
-                            value = "$totalNasabah Orang",
+                            value = "$totalNasabah",
                             icon = Icons.Default.AccountCircle,
                             iconColor = Color(0xFF2563EB)
                         )
                         StatCard(
                             modifier = Modifier.weight(1f),
-                            title = "Total Sampah",
-                            value = "${totalSampahKg} Kg",
-                            icon = Icons.Default.Delete,
-                            iconColor = Color(0xFF10B981)
+                            title = "Saldo Nasabah",
+                            value = CurrencyHelper.formatRupiah(totalSaldo),
+                            icon = Icons.Default.AccountBalanceWallet,
+                            iconColor = Color(0xFFD97706)
                         )
                     }
                 }
                 
                 item {
-                    StatCard(
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        title = "Total Saldo Nasabah",
-                        value = CurrencyHelper.formatRupiah(totalSaldo),
-                        icon = Icons.Default.AccountBalanceWallet,
-                        iconColor = Color(0xFFD97706)
-                    )
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        StatCard(
+                            modifier = Modifier.weight(1f),
+                            title = "Stok Gudang",
+                            value = "${stokGudangKg} Kg",
+                            icon = Icons.Default.Delete,
+                            iconColor = Color(0xFF10B981)
+                        )
+                        StatCard(
+                            modifier = Modifier.weight(1f),
+                            title = "Kas Bank",
+                            value = CurrencyHelper.formatRupiah(totalKas),
+                            icon = Icons.Default.AccountBalanceWallet,
+                            iconColor = Color(0xFF16A34A)
+                        )
+                    }
                 }
 
                 // Quick Action Grid

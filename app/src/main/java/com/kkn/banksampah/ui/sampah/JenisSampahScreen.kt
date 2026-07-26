@@ -191,7 +191,7 @@ fun JenisSampahDialog(
 ) {
     var nama by remember { mutableStateOf(jenisSampah?.nama ?: "") }
     var kategori by remember { mutableStateOf(jenisSampah?.kategori ?: "Organik") }
-    var harga by remember { mutableStateOf(jenisSampah?.hargaPerSatuan?.toString() ?: "") }
+    var harga by remember { mutableStateOf(jenisSampah?.hargaPerSatuan?.toLong()?.toString() ?: "") }
     var deskripsi by remember { mutableStateOf(jenisSampah?.deskripsi ?: "") }
 
     var namaError by remember { mutableStateOf<String?>(null) }
@@ -258,10 +258,11 @@ fun JenisSampahDialog(
 
                 OutlinedTextField(
                     value = harga,
-                    onValueChange = { harga = it; hargaError = null },
-                    label = { Text("Harga per Kg (Rp)") },
+                    onValueChange = { harga = it.filter { c -> c.isDigit() }; hargaError = null },
+                    label = { Text("Harga per Kg") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    visualTransformation = com.kkn.banksampah.util.CurrencyVisualTransformation(),
                     isError = hargaError != null,
                     supportingText = hargaError?.let { { Text(it, color = MaterialTheme.colorScheme.error) } },
                     modifier = Modifier.fillMaxWidth()
